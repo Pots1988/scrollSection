@@ -1,42 +1,41 @@
 {
   "browserslist": [
     "last 2 versions",
-    "IE 11",
+    "IE >= 11",
     "Firefox ESR"
   ],
-  "name": "Fariga-Popenko",
+  "name": "Gulp_project",
   "description": "Проект ...",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "autoprefixer": "7.1.x",
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "browser-sync": "2.18.x",
-    "gulp": "3.9.x",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-loader": "^7.1.5",
+    "browser-sync": "^2.24.7",
+    "gulp": "^4.0.0",
     "gulp-babel": "^7.0.0",
     "gulp-cheerio": "^0.6.2",
     "gulp-concat": "^2.6.1",
-    "gulp-csscomb": "^3.0.8",
-    "gulp-csso": "^3.0.0",
+    "gulp-cssnano": "^2.1.3",
     "gulp-file-include": "^1.1.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^3.4.0",
-    "gulp-inline-source": "^3.1.0",
-    "gulp-plumber": "1.1.0",
-    "gulp-postcss": "7.0.x",
+    "gulp-plumber": "^1.1.0",
+    "gulp-postcss": "^7.0.x",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "3.1.0",
-    "gulp-sourcemaps": "2.6.0",
-    "gulp-svgmin": "1.2.4",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-svgmin": "^1.2.4",
     "gulp-svgstore": "^6.1.0",
     "gulp-uglify": "^3.0.0",
     "gulp-webp": "^2.3.0",
-    "rimraf": "2.6.1",
-    "run-sequence": "^2.2.0",
-    "stylelint": "8.1.x",
-    "stylelint-config-htmlacademy": "0.1.x"
+    "rimraf": "^2.6.1",
+    "gulp-size": "^2.1.0",
+    "uglifyjs-webpack-plugin": "^1.3.0",
+    "webpack-stream": "^4.0.3"
   },
   "editorconfig-cli": [
     "src/**/*.html",
@@ -46,15 +45,11 @@
     "src/**/*.scss"
   ],
   "engines": {
-    "node": "8.2"
+    "node": ">=8.2"
   },
   "scripts": {
-    "editorconfig": "editorconfig-cli",
-    "stylelint": "stylelint 'src/**/*.scss' --syntax scss",
-    "test": "npm run editorconfig && npm run stylelint",
     "build": "gulp build",
     "production": "gulp production",
-    "productionInline": "gulp production && gulp inlinesource",
     "webp": "gulp webp"
   }
 }

@@ -1,8 +1,8 @@
 {
-  "name": "Rise19",
-  "short_name": "Rise19",
-  "description": "",
-  "lang": "en",
+  "name": "Название сайта",
+  "short_name": "Короткое название сайта",
+  "description": "Описание",
+  "lang": "ru",
   "dir": "ltr",
   "start_url": "/",
   "scope": "/",
