@@ -46,7 +46,8 @@ var path = {
     fonts: [`src/fonts/**/*.*`, `!src/fonts/**/*.scss`],
     favicon: `src/img/favicon/*`,
     svg: `src/img/svg/*.svg`,
-    webmanifest: `src/manifest-*.json`
+    webmanifest: `src/manifest-*.json`,
+    webpack: `src/webpack/main-webpack.js`
   },
   watch: {
     html: `src/**/*.html`,
@@ -101,6 +102,7 @@ gulp.task(`symbols`, () => {
 //Копируем шрифты
 gulp.task(`fonts`, () => {
   return gulp.src(path.src.fonts)
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.fonts))
     .pipe(server.stream());
 });
@@ -110,6 +112,7 @@ gulp.task(`fonts`, () => {
 gulp.task(`blocksvg`, () => {
   return gulp.src(path.src.blocksvg)
     .pipe(gulpIf(isProduction, svgmin()))
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.img))
     .pipe(server.stream());
 });
@@ -126,6 +129,7 @@ gulp.task(`copyfavicon`, () => {
 //Копируем webmanifest
 gulp.task(`copywebmanifest`, () => {
   return gulp.src(path.src.webmanifest)
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.webmanifest))
     .pipe(server.stream());
 });
@@ -147,6 +151,7 @@ gulp.task(`fileinclude`, () => {
       basepath: `@file`
     }))
     .pipe(gulpIf(isProduction, htmlmin({ collapseWhitespace: true })))
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.html))
     .pipe(server.stream());
 });
@@ -156,13 +161,13 @@ gulp.task(`fileinclude`, () => {
 gulp.task(`style`, () => {
   return gulp.src(path.src.css)
     .pipe(plumber())
-    .pipe(gulpIf(isProduction, sourcemaps.init()))
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(postcss([
       autoprefixer()
     ]))
     .pipe(gulpIf(isProduction, cssnano({ discardComments: { removeAll: true } })))
-    .pipe(gulpIf(isProduction, sourcemaps.write()))
+    .pipe(sourcemaps.write())
     .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.css))
     .pipe(server.stream());
@@ -171,14 +176,28 @@ gulp.task(`style`, () => {
 
 // Таск для сбора JS в один файл
 gulp.task(`scripts`, () => {
-  return gulp.src(path.src.js, { sourcemaps: true })
+  return gulp.src(path.src.js)
+    .pipe(sourcemaps.init())
     .pipe(babel({
       presets: [`env`]
     }))
     .pipe(concat(`script.js`))
     .pipe(gulpIf(isProduction, uglify()))
+    .pipe(sourcemaps.write())
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.js))
     .pipe(server.stream());
+});
+//--------------------------------------
+
+// Таск для Webpack
+gulp.task(`webpack`, () => {
+  return gulp.src(path.src.webpack)
+        .pipe(webpack(require(`./webpack.config.js`)[`development`]))
+        .pipe(rename(`main-webpack.js`))
+        .pipe(size({ showFiles: true }))
+        .pipe(gulp.dest(path.build.js))
+        .pipe(server.stream());
 });
 //--------------------------------------
 
@@ -190,6 +209,7 @@ gulp.task(`scriptsJq`, () => {
     }))
     .pipe(concat(`jq-script.js`))
     .pipe(gulpIf(isProduction, uglify()))
+    .pipe(size({ showFiles: true }))
     .pipe(gulp.dest(path.build.js))
     .pipe(server.stream());
 });
@@ -225,7 +245,7 @@ gulp.task(`server`, () => {
 
   gulp.watch(path.src.img, gulp.parallel(`image`));
   gulp.watch(path.watch.html, gulp.parallel(`fileinclude`));
-  gulp.watch(path.watch.js, gulp.parallel(`scripts`, `scriptsJq`));
+  gulp.watch(path.watch.js, gulp.parallel(`scripts`, `scriptsJq`, `webpack`));
   gulp.watch(path.src.jsPlugins, gulp.parallel(`pluginsJS`));
   gulp.watch(path.watch.css, gulp.parallel(`style`));
   gulp.watch(path.watch.fonts, gulp.parallel(`fonts`));
@@ -245,6 +265,7 @@ gulp.task(`build`, (done) => {
       `fileinclude`,
       `style`,
       `scripts`,
+      `webpack`,
       `scriptsJq`,
       `fonts`,
       `pluginsJS`,
