@@ -9,7 +9,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "autoprefixer": "7.1.x",
+    "autoprefixer": "^7.1.x",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -38,8 +38,8 @@
     "gulp-svgstore": "^6.1.0",
     "gulp-uglify": "^3.0.0",
     "gulp-webp": "^2.3.0",
-    "rimraf": "^2.6.1",
     "gulp-size": "^2.1.0",
+    "gulp-rimraf": "^0.2.2",
     "uglifyjs-webpack-plugin": "^1.3.0",
     "webpack-stream": "^4.0.3"
   },

@@ -3,7 +3,7 @@
 // Global
 const gulp = require(`gulp`);
 const plumber = require(`gulp-plumber`);
-const rimraf = require("rimraf");
+const rimraf = require(`gulp-rimraf`);
 const rename = require(`gulp-rename`);
 const htmlmin = require(`gulp-htmlmin`);
 const fileinclude = require(`gulp-file-include`);
@@ -67,11 +67,12 @@ var path = {
     svgSprite: `build/img/svg`,
     webmanifest: `build/`
   },
-  clean: `./build`,
+  clean: [`./build`, `./someFolder`],
 };
 
-gulp.task("clean", (cb) => {
-  return rimraf(path.clean, cb);
+gulp.task("clean", () => {
+  return gulp.src(path.clean, {read: false})
+         .pipe(rimraf());
 });
 //-----------------------------------
 
