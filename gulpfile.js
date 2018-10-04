@@ -51,7 +51,8 @@ var path = {
   },
   watch: {
     html: `src/**/*.html`,
-    js: `src/**/*.js`,
+    js: [`src/**/*.js`, `!src/webpack/**/*`],
+    webpack: `src/webpack/**/*`,
     css: `src/**/*.scss`,
     fonts: `src/fonts/**/*.*`
   },
@@ -193,7 +194,7 @@ gulp.task(`scripts`, () => {
 // Таск для Webpack
 gulp.task(`webpack`, () => {
   return gulp.src(path.src.webpack)
-        .pipe(webpack(require(`./webpack.config.js`)[`development`]))
+        .pipe(webpack(require(`./webpack.config.js`)))
         .pipe(rename(`main-webpack.js`))
         .pipe(size({ showFiles: true }))
         .pipe(gulp.dest(path.build.js))
@@ -245,7 +246,8 @@ gulp.task(`server`, () => {
 
   gulp.watch(path.src.img, gulp.parallel(`image`));
   gulp.watch(path.watch.html, gulp.parallel(`fileinclude`));
-  gulp.watch(path.watch.js, gulp.parallel(`scripts`, `scriptsJq`, `webpack`));
+  gulp.watch(path.watch.js, gulp.parallel(`scripts`, `scriptsJq`));
+  gulp.watch(path.watch.webpack, gulp.parallel(`webpack`));
   gulp.watch(path.src.jsPlugins, gulp.parallel(`pluginsJS`));
   gulp.watch(path.watch.css, gulp.parallel(`style`));
   gulp.watch(path.watch.fonts, gulp.parallel(`fonts`));
