@@ -26,3 +26,11 @@ body {
 .body-popup {
   overflow: hidden;
 }
+
+.wrap {
+  @include wrap;
+}
+
+.some-section {
+  height: 400px;
+}
